@@ -19,12 +19,13 @@ RUN cd /ComfyUI/custom_nodes && \
     cd ComfyUI-Manager && \
     pip install -r requirements.txt
 
-# wget을 사용하여 모델 다운로드 (인증 불필요)
-RUN wget https://huggingface.co/Comfy-Org/z_image_turbo/resolve/main/split_files/diffusion_models/z_image_turbo_bf16.safetensors -O /ComfyUI/models/unet/z_image_turbo_bf16.safetensors
-RUN wget https://huggingface.co/Comfy-Org/z_image_turbo/resolve/main/split_files/text_encoders/qwen_3_4b.safetensors -O /ComfyUI/models/clip/qwen_3_4b.safetensors
-RUN wget https://huggingface.co/Comfy-Org/z_image_turbo/resolve/main/split_files/vae/ae.safetensors -O /ComfyUI/models/vae/ae.safetensors
-RUN mkdir -p /ComfyUI/models/model_patches && \
-    wget https://huggingface.co/alibaba-pai/Z-Image-Turbo-Fun-Controlnet-Union/resolve/main/Z-Image-Turbo-Fun-Controlnet-Union.safetensors -O /ComfyUI/models/model_patches/Z-Image-Turbo-Fun-Controlnet-Union.safetensors
+# 파이썬 모델 다운로드 스크립트 복사 및 실행
+COPY download_models.py /download_models.py
+RUN pip install -U huggingface-hub hf-transfer && \
+    HF_HUB_ENABLE_HF_TRANSFER=1 python3 /download_models.py && \
+    rm /download_models.py
+
+
 
 
 COPY . .
