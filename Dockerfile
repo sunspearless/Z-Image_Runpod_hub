@@ -4,7 +4,6 @@ FROM wlsdml1114/multitalk-base:1.4 as runtime
 # wget 설치 (URL 다운로드를 위해)
 RUN apt-get update && apt-get install -y wget && rm -rf /var/lib/apt/lists/*
 
-RUN pip install -U "huggingface_hub[hf_transfer]"
 RUN pip install runpod websocket-client boto3
 
 WORKDIR /
@@ -19,11 +18,16 @@ RUN cd /ComfyUI/custom_nodes && \
     cd ComfyUI-Manager && \
     pip install -r requirements.txt
 
-# 파이썬 모델 다운로드 스크립트 복사 및 실행
-COPY download_models.py /download_models.py
-RUN pip install -U huggingface-hub hf-transfer && \
-    HF_HUB_ENABLE_HF_TRANSFER=1 python3 /download_models.py && \
-    rm /download_models.py
+# 모델 다운로드 — 직접 wget (HF 캐시 snapshots/ 심링크를 move하면 깨진 링크가 되어
+# ComfyUI가 'exists but doesn't link anywhere'로 스킵하는 문제를 회피)
+RUN rm -f /ComfyUI/models/unet/z_image_turbo_bf16.safetensors && \
+    wget -q https://huggingface.co/Comfy-Org/z_image_turbo/resolve/main/split_files/diffusion_models/z_image_turbo_bf16.safetensors -O /ComfyUI/models/unet/z_image_turbo_bf16.safetensors
+RUN rm -f /ComfyUI/models/clip/qwen_3_4b.safetensors && \
+    wget -q https://huggingface.co/Comfy-Org/z_image_turbo/resolve/main/split_files/text_encoders/qwen_3_4b.safetensors -O /ComfyUI/models/clip/qwen_3_4b.safetensors
+RUN rm -f /ComfyUI/models/vae/ae.safetensors && \
+    wget -q https://huggingface.co/Comfy-Org/z_image_turbo/resolve/main/split_files/vae/ae.safetensors -O /ComfyUI/models/vae/ae.safetensors
+RUN rm -f "/ComfyUI/models/model_patches/Z-Image-Turbo-Fun-Controlnet-Union.safetensors" && \
+    wget -q https://huggingface.co/alibaba-pai/Z-Image-Turbo-Fun-Controlnet-Union/resolve/main/Z-Image-Turbo-Fun-Controlnet-Union.safetensors -O "/ComfyUI/models/model_patches/Z-Image-Turbo-Fun-Controlnet-Union.safetensors"
 
 
 

@@ -45,5 +45,5 @@ Model license: Apache-2.0. Worker template code follows the original project's l
 ## Layout
 
 - `handler.py` — runpod worker: loads a workflow (`workflow/z_image.json` text-only, `z_image_control.json`, `z_image_lora.json`), fills prompt/seed/steps/cfg/width/height, queues to ComfyUI, returns the first image base64.
-- `Dockerfile` / `download_models.py` — builds ComfyUI (pinned) + downloads the weights.
+- `Dockerfile` — builds ComfyUI (pinned `v0.34.1`) + downloads the weights directly with `wget` (avoids HF-cache symlink issues).
 - `entrypoint.sh` — starts ComfyUI, waits for readiness, then runs the worker.
