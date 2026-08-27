@@ -10,7 +10,7 @@ RUN pip install runpod websocket-client boto3
 WORKDIR /
 
 
-RUN git clone https://github.com/comfyanonymous/ComfyUI.git && \
+RUN git clone --depth 1 --branch v0.34.1 https://github.com/comfyanonymous/ComfyUI.git && \
     cd /ComfyUI && \
     pip install -r requirements.txt
 

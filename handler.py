@@ -268,7 +268,7 @@ def handler(job):
     prompt_text = job_input.get("prompt", "")
     seed = job_input.get("seed", 533303727624653)
     steps = job_input.get("steps", 9)
-    cfg = job_input.get("cfg", 1.0)
+    cfg = job_input.get("cfg", job_input.get("guidance", 1.0))
     width = job_input.get("width", 1024)
     height = job_input.get("height", 1024)
     negative_prompt = job_input.get("negative_prompt", "")

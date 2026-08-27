@@ -1,6 +1,6 @@
 {
-    "title": "Flux Krea, Z-image",
-    "description": "Flux Krea and Z-image are models that can generate and edit images using Flux and Z-image.",
+    "title": "Z-Image Turbo",
+    "description": "Z-Image Turbo (Tongyi-MAI, Apache-2.0, 6B) text-to-image via ComfyUI on RunPod Serverless. Flat input: prompt, seed, steps, cfg (guidance alias), width, height.",
     "type": "serverless",
     "category": "image",
     "iconUrl": "https://github.com/wlsdml1114/Engui_Studio/blob/main/assets/logo.png?raw=true",
